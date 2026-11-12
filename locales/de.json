@@ -1,0 +1,31 @@
+{
+  "name": "Nativer Debug- & Speicher-Inspektor",
+  "description": "Bietet professionelle Reverse-Engineering- und Diagnosefunktionen wie Prozess-Anhängung, DLL-Injektion, Remote-Funktionsaufrufe, Handle-Freigabe, virtuellen/DMA-Speicherzugriff und Mustersuche.",
+  "group": "Reverse & Debug",
+  "actions": {
+    "AttachProcess": {
+      "display_name": "Prozess anhängen & injizieren (AttachProcess)",
+      "description": "An Zielprozess anhängen mit Unterstützung für dynamische Bibliotheksinjektion und Initialisierungsnutzlast"
+    },
+    "CallMethod": {
+      "display_name": "Exportierte Methode aufrufen (CallMethod)",
+      "description": "Ruft die angegebene exportierte Funktion eines geladenen Moduls auf und gibt das Ergebnis zurück"
+    },
+    "CloseHandle": {
+      "display_name": "System-Handle schließen (CloseHandle)",
+      "description": "Schließt und gibt geöffnete Systemressourcen-Handles frei, um Stabilität zu gewährleisten"
+    },
+    "ReadMemory": {
+      "display_name": "Prozessspeicher lesen (ReadMemory)",
+      "description": "Liest Daten aus Prozessspeicheradressen mit Unterstützung für mehrstufige Zeiger-Offsets und verschiedene Datentypen"
+    },
+    "SearchMemory": {
+      "display_name": "Speichermuster suchen (SearchMemory)",
+      "description": "Durchsucht den Prozessspeicher nach bestimmten Byte-Mustern (AOB) mit Wildcard-Unterstützung"
+    },
+    "WriteMemory": {
+      "display_name": "Prozessspeicher schreiben (WriteMemory)",
+      "description": "Schreibt Daten in Speicheradressen des Zielprozesses mit optionaler automatischer Aufhebung des Schreibschutzes"
+    }
+  }
+}

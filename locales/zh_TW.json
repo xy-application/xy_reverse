@@ -1,0 +1,31 @@
+{
+  "name": "底層調試與記憶體分析探針 (Native Debug & Memory Inspector)",
+  "description": "提供行程注入掛載、匯出函數遠端調用、系統句柄釋放、虛擬/物理DMA記憶體讀寫與特徵碼掃描等專家級底層逆向與診斷能力",
+  "group": "逆向調試",
+  "actions": {
+    "AttachProcess": {
+      "display_name": "附加與模組注入 (AttachProcess)",
+      "description": "連接並附加到目標軟體行程，支援動態載入擴充模組與執行初始化邏輯"
+    },
+    "CallMethod": {
+      "display_name": "調用匯出方法 (CallMethod)",
+      "description": "調用目標行程載入模組中的指定匯出函數並獲取執行結果"
+    },
+    "CloseHandle": {
+      "display_name": "關閉系統句柄 (CloseHandle)",
+      "description": "釋放已開啟的系統資源句柄，保證系統穩定運行"
+    },
+    "ReadMemory": {
+      "display_name": "讀取行程記憶體 (ReadMemory)",
+      "description": "讀取目標軟體行程或模組記憶體位址中的資料，支援多種資料類型與偏移鏈解析"
+    },
+    "SearchMemory": {
+      "display_name": "搜尋記憶體特徵碼 (SearchMemory)",
+      "description": "在目標軟體行程或模組記憶體中檢索特定的特徵碼或位元組序列"
+    },
+    "WriteMemory": {
+      "display_name": "寫入行程記憶體 (WriteMemory)",
+      "description": "向目標軟體行程或模組記憶體位址寫入資料，支援自動解除寫入保護"
+    }
+  }
+}

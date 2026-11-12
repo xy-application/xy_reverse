@@ -1,0 +1,31 @@
+{
+  "name": "底层调试与内存分析探针 (Native Debug & Memory Inspector)",
+  "description": "提供进程注入挂载、导出函数远程调用、系统句柄释放、虚拟/物理DMA内存读写与特征码扫描等专家级底层逆向与诊断能力",
+  "group": "逆向调试",
+  "actions": {
+    "AttachProcess": {
+      "display_name": "附加与模块注入 (AttachProcess)",
+      "description": "连接并附加到目标软件进程，支持动态加载扩展模块与执行初始化逻辑"
+    },
+    "CallMethod": {
+      "display_name": "调用导出方法 (CallMethod)",
+      "description": "调用目标进程加载模块中的指定导出函数并获取执行结果"
+    },
+    "CloseHandle": {
+      "display_name": "关闭系统句柄 (CloseHandle)",
+      "description": "释放已打开的系统资源句柄，保证系统稳定运行"
+    },
+    "ReadMemory": {
+      "display_name": "读取进程内存 (ReadMemory)",
+      "description": "读取目标软件进程或模块内存地址中的数据，支持多种数据类型与偏移链解析"
+    },
+    "SearchMemory": {
+      "display_name": "搜索内存特征码 (SearchMemory)",
+      "description": "在目标软件进程或模块内存中检索特定的特征码或字节序列"
+    },
+    "WriteMemory": {
+      "display_name": "写入进程内存 (WriteMemory)",
+      "description": "向目标软件进程或模块内存地址写入数据，支持自动解除写保护"
+    }
+  }
+}

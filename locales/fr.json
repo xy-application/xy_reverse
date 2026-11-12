@@ -1,0 +1,31 @@
+{
+  "name": "Inspecteur de débogage natif et de mémoire",
+  "description": "Fournit des fonctionnalités expertes d'ingénierie inverse et de diagnostic, notamment l'attachement de processus, l'injection de DLL, l'appel de fonctions exportées, la libération de handles, la lecture/écriture mémoire et la recherche de motifs.",
+  "group": "Rétro-ingénierie",
+  "actions": {
+    "AttachProcess": {
+      "display_name": "Attacher le processus et injection (AttachProcess)",
+      "description": "S'attache au processus cible avec prise en charge de l'injection de bibliothèque dynamique et de l'initialisation"
+    },
+    "CallMethod": {
+      "display_name": "Appeler la méthode exportée (CallMethod)",
+      "description": "Appelle la fonction exportée spécifiée à partir d'un module chargé et récupère le résultat d'exécution"
+    },
+    "CloseHandle": {
+      "display_name": "Fermer le handle système (CloseHandle)",
+      "description": "Ferme et libère les handles de ressources système ouverts pour assurer la stabilité"
+    },
+    "ReadMemory": {
+      "display_name": "Lire la mémoire du processus (ReadMemory)",
+      "description": "Lit les données à partir des adresses mémoire du processus cible avec chaînes de décalages et formats multiples"
+    },
+    "SearchMemory": {
+      "display_name": "Rechercher un motif en mémoire (SearchMemory)",
+      "description": "Recherche une séquence d'octets ou un motif de signature (AOB) dans la mémoire du processus cible"
+    },
+    "WriteMemory": {
+      "display_name": "Écrire dans la mémoire (WriteMemory)",
+      "description": "Écrit des données à l'adresse mémoire du processus cible avec déprotection automatique"
+    }
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "name": "Native Debug & Memory Inspector",
+  "description": "Provides expert-grade reverse engineering and diagnostic capabilities including process attachment, dynamic library injection, remote export method invocation, handle release, virtual/DMA memory read/write, and pattern scanning.",
+  "group": "Reverse & Debug",
+  "actions": {
+    "AttachProcess": {
+      "display_name": "Attach Process (AttachProcess)",
+      "description": "Attach to target application process with support for dynamic library injection and initialization payload"
+    },
+    "CallMethod": {
+      "display_name": "Call Exported Method (CallMethod)",
+      "description": "Invoke specified exported function from a loaded module or target process and retrieve execution results"
+    },
+    "CloseHandle": {
+      "display_name": "Close System Handle (CloseHandle)",
+      "description": "Close and release opened system resource handles to ensure stability and resolve file locks"
+    },
+    "ReadMemory": {
+      "display_name": "Read Process Memory (ReadMemory)",
+      "description": "Read data from target process memory addresses with multi-level pointer offsets and varied type formats"
+    },
+    "SearchMemory": {
+      "display_name": "Search Memory Pattern (SearchMemory)",
+      "description": "Scan and locate specific byte patterns (AOB) with wildcard and relative addressing support"
+    },
+    "WriteMemory": {
+      "display_name": "Write Process Memory (WriteMemory)",
+      "description": "Write data to target process memory addresses with optional automatic page unprotection"
+    }
+  }
+}

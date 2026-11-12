@@ -1,0 +1,588 @@
+{
+  "plugin_id": "xy_reverse",
+  "name": "底层调试与内存分析探针 (Native Debug & Memory Inspector)",
+  "version": "0.54.0",
+  "group": "Reverse",
+  "group_icon": "🔬",
+  "description": "提供进程注入挂载、导出函数远程调用、系统句柄释放、虚拟/物理DMA内存读写与特征码扫描等专家级底层逆向与诊断能力",
+  "compliance_level": "Expert-Diagnostics",
+  "actions": [
+    {
+      "tag": "AttachProcess",
+      "display_name": "附加与模块注入 (AttachProcess)",
+      "icon": "📎",
+      "platforms": "All",
+      "requires_admin": true,
+      "description": "连接并附加到目标软件进程，支持动态加载扩展模块与执行初始化逻辑",
+      "keywords": [
+        "reverse",
+        "debug",
+        "process",
+        "attach",
+        "inject",
+        "hook",
+        "附加进程",
+        "进程注入",
+        "动态库"
+      ],
+      "fields": [
+        {
+          "name": "app",
+          "display_name": "目标进程",
+          "intrinsic_type": "String",
+          "required": true,
+          "group": "目标进程",
+          "default_type": "string",
+          "default_value": "",
+          "presets": [],
+          "description": "目标进程名称、PID 或完整路径"
+        },
+        {
+          "name": "dy",
+          "display_name": "模块动态库",
+          "intrinsic_type": "Path",
+          "group": "模块注入",
+          "default_type": "string",
+          "default_value": "",
+          "presets": [],
+          "description": "待注入或加载的动态链接库文件路径"
+        },
+        {
+          "name": "entrypoint",
+          "display_name": "入口函数",
+          "intrinsic_type": "String",
+          "group": "模块注入",
+          "default_type": "string",
+          "default_value": "",
+          "presets": [],
+          "description": "动态库导出入口执行函数名称"
+        },
+        {
+          "name": "data",
+          "display_name": "初始化数据",
+          "intrinsic_type": "String",
+          "group": "模块注入",
+          "default_type": "string",
+          "default_value": "",
+          "presets": [],
+          "description": "传递给入口函数的初始化配置或载荷字符串"
+        },
+        {
+          "name": "command_line",
+          "display_name": "命令行参数",
+          "intrinsic_type": "String",
+          "group": "高级启动",
+          "is_advanced": true,
+          "default_type": "string",
+          "default_value": "",
+          "presets": [],
+          "description": "可选的附加启动参数"
+        }
+      ],
+      "output_type": "string"
+    },
+    {
+      "tag": "CallMethod",
+      "display_name": "调用导出方法 (CallMethod)",
+      "icon": "⚡",
+      "platforms": "All",
+      "description": "调用目标进程加载模块中的指定导出函数并获取执行结果",
+      "keywords": [
+        "reverse",
+        "debug",
+        "process",
+        "method",
+        "call",
+        "export",
+        "调用方法",
+        "导出函数"
+      ],
+      "fields": [
+        {
+          "name": "object",
+          "display_name": "模块/会话对象",
+          "intrinsic_type": "String",
+          "required": true,
+          "group": "方法调用",
+          "default_type": "string",
+          "default_value": "",
+          "presets": [],
+          "description": "目标模块名称或会话标识"
+        },
+        {
+          "name": "method",
+          "display_name": "方法名称",
+          "intrinsic_type": "String",
+          "required": true,
+          "group": "方法调用",
+          "default_type": "string",
+          "default_value": "",
+          "presets": [],
+          "description": "待调用的导出函数名称"
+        },
+        {
+          "name": "return_type",
+          "display_name": "返回值类型",
+          "intrinsic_type": "Enum",
+          "enum_type": "ReverseReturnType",
+          "group": "类型与约定",
+          "default_type": "string",
+          "default_value": "void",
+          "presets": [
+            "int",
+            "uint",
+            "string",
+            "pointer",
+            "bool",
+            "void",
+            "float"
+          ],
+          "description": "函数返回值的数据解析类型"
+        },
+        {
+          "name": "abi",
+          "display_name": "调用约定",
+          "intrinsic_type": "Enum",
+          "enum_type": "CallingConventionABI",
+          "group": "类型与约定",
+          "default_type": "string",
+          "default_value": "default",
+          "presets": [
+            "default",
+            "stdcall",
+            "fastcall",
+            "thiscall"
+          ],
+          "description": "底层函数调用约定"
+        }
+      ],
+      "output_type": "Mixed"
+    },
+    {
+      "tag": "CloseHandle",
+      "display_name": "关闭系统句柄 (CloseHandle)",
+      "icon": "🔒",
+      "platforms": "All",
+      "description": "释放已打开的系统资源句柄，保证系统稳定运行",
+      "keywords": [
+        "reverse",
+        "debug",
+        "handle",
+        "close",
+        "release",
+        "关闭句柄",
+        "释放句柄"
+      ],
+      "fields": [
+        {
+          "name": "type",
+          "display_name": "句柄类型",
+          "intrinsic_type": "String",
+          "required": true,
+          "group": "句柄管理",
+          "default_type": "string",
+          "default_value": "Process",
+          "presets": [
+            "Process",
+            "Thread",
+            "File",
+            "Event",
+            "Mutex",
+            "Semaphore",
+            "Key",
+            "All"
+          ],
+          "description": "系统句柄资源类型"
+        },
+        {
+          "name": "name",
+          "display_name": "句柄名称或关键字",
+          "intrinsic_type": "String",
+          "required": true,
+          "group": "句柄管理",
+          "default_type": "string",
+          "default_value": "",
+          "presets": [],
+          "description": "待释放句柄的名称、标识或过滤关键字"
+        },
+        {
+          "name": "exe_file",
+          "display_name": "关联进程文件",
+          "intrinsic_type": "Path",
+          "group": "高级关联",
+          "is_advanced": true,
+          "default_type": "string",
+          "default_value": "",
+          "presets": [],
+          "description": "关联的可执行程序文件（可选）"
+        }
+      ],
+      "output_type": "bool"
+    },
+    {
+      "tag": "ReadMemory",
+      "display_name": "读取进程内存 (ReadMemory)",
+      "icon": "🧠",
+      "platforms": "All",
+      "description": "读取目标软件进程或模块内存地址中的数据，支持多种数据类型与偏移链解析",
+      "keywords": [
+        "reverse",
+        "debug",
+        "memory",
+        "read",
+        "process",
+        "读取内存",
+        "内存读取"
+      ],
+      "fields": [
+        {
+          "name": "app",
+          "display_name": "目标进程",
+          "intrinsic_type": "String",
+          "required": true,
+          "group": "目标与地址",
+          "default_type": "string",
+          "default_value": "",
+          "presets": [],
+          "description": "目标进程名称或标识"
+        },
+        {
+          "name": "address",
+          "display_name": "内存地址",
+          "intrinsic_type": "String",
+          "required": true,
+          "group": "目标与地址",
+          "default_type": "string",
+          "default_value": "0x0",
+          "presets": [
+            "0x0"
+          ],
+          "description": "十六进制内存地址或基址"
+        },
+        {
+          "name": "data_type",
+          "display_name": "数据类型",
+          "intrinsic_type": "Enum",
+          "enum_type": "MemoryDataType",
+          "group": "解析格式",
+          "default_type": "string",
+          "default_value": "i32",
+          "presets": [
+            "i32",
+            "i64",
+            "u32",
+            "u64",
+            "f32",
+            "f64",
+            "string_utf8",
+            "string_utf16",
+            "bytes",
+            "hex",
+            "struct: { hp: i32, mp: i32, x: f32, y: f32 }"
+          ],
+          "description": "读取解析的数据格式"
+        },
+        {
+          "name": "size",
+          "display_name": "读取长度",
+          "intrinsic_type": "String",
+          "group": "解析格式",
+          "default_type": "string",
+          "default_value": "4",
+          "presets": [
+            "4",
+            "8",
+            "16",
+            "32",
+            "64"
+          ],
+          "description": "读取字节数（适用于 bytes/hex/string）"
+        },
+        {
+          "name": "offsets",
+          "display_name": "指针偏移",
+          "intrinsic_type": "String",
+          "group": "高级硬件通道",
+          "is_advanced": true,
+          "default_type": "string",
+          "default_value": "",
+          "presets": [],
+          "description": "多级指针偏移链（如 0x10,0x28）"
+        },
+        {
+          "name": "backend",
+          "display_name": "驱动模式",
+          "intrinsic_type": "Enum",
+          "enum_type": "MemoryDriverBackend",
+          "group": "高级硬件通道",
+          "is_advanced": true,
+          "default_type": "string",
+          "default_value": "auto",
+          "presets": [
+            "auto",
+            "native"
+          ],
+          "description": "内存访问驱动模式"
+        },
+        {
+          "name": "memflow_connector",
+          "display_name": "硬件连接通道",
+          "intrinsic_type": "Enum",
+          "enum_type": "MemflowConnectorType",
+          "group": "高级硬件通道",
+          "is_advanced": true,
+          "default_type": "string",
+          "default_value": "",
+          "presets": [],
+          "description": "可选的外部物理直连通道配置 (PCIe DMA)"
+        }
+      ],
+      "output_type": "Mixed"
+    },
+    {
+      "tag": "SearchMemory",
+      "display_name": "搜索内存特征码 (SearchMemory)",
+      "icon": "🔎",
+      "platforms": "All",
+      "description": "在目标软件进程或模块内存中检索特定的特征码或字节序列",
+      "keywords": [
+        "reverse",
+        "debug",
+        "memory",
+        "search",
+        "scan",
+        "aob",
+        "pattern",
+        "内存搜索",
+        "特征码检索"
+      ],
+      "fields": [
+        {
+          "name": "app",
+          "display_name": "目标进程",
+          "intrinsic_type": "String",
+          "required": true,
+          "group": "搜索目标",
+          "default_type": "string",
+          "default_value": "",
+          "presets": [],
+          "description": "目标进程名称或标识"
+        },
+        {
+          "name": "pattern",
+          "display_name": "特征码序列",
+          "intrinsic_type": "String",
+          "required": true,
+          "group": "搜索目标",
+          "default_type": "string",
+          "default_value": "",
+          "presets": [],
+          "description": "十六进制特征码（如 48 8B 05 ?? ?? ?? ??）"
+        },
+        {
+          "name": "module",
+          "display_name": "目标模块",
+          "intrinsic_type": "String",
+          "group": "搜索范围",
+          "default_type": "string",
+          "default_value": "",
+          "presets": [],
+          "description": "限定搜索的动态链接库模块名称"
+        },
+        {
+          "name": "match_all",
+          "display_name": "返回全部匹配",
+          "intrinsic_type": "String",
+          "group": "搜索范围",
+          "default_type": "string",
+          "default_value": "false",
+          "presets": [
+            "false",
+            "true"
+          ],
+          "description": "是否返回所有匹配地址（false 表示仅返回首个）"
+        },
+        {
+          "name": "rip_offset",
+          "display_name": "相对寻址偏移",
+          "intrinsic_type": "String",
+          "group": "高级定位",
+          "is_advanced": true,
+          "default_type": "string",
+          "default_value": "",
+          "presets": [],
+          "description": "相对偏移计算位置（可选）"
+        },
+        {
+          "name": "instruction_len",
+          "display_name": "指令长度",
+          "intrinsic_type": "String",
+          "group": "高级定位",
+          "is_advanced": true,
+          "default_type": "string",
+          "default_value": "",
+          "presets": [],
+          "description": "完整机器指令长度（可选）"
+        },
+        {
+          "name": "backend",
+          "display_name": "驱动模式",
+          "intrinsic_type": "Enum",
+          "enum_type": "MemoryDriverBackend",
+          "group": "高级通道",
+          "is_advanced": true,
+          "default_type": "string",
+          "default_value": "auto",
+          "presets": [
+            "auto",
+            "native"
+          ],
+          "description": "内存扫描驱动模式"
+        },
+        {
+          "name": "memflow_connector",
+          "display_name": "硬件连接通道",
+          "intrinsic_type": "Enum",
+          "enum_type": "MemflowConnectorType",
+          "group": "高级通道",
+          "is_advanced": true,
+          "default_type": "string",
+          "default_value": "",
+          "presets": [],
+          "description": "可选的外部物理直连通道配置 (PCIe DMA)"
+        }
+      ],
+      "output_type": "Mixed"
+    },
+    {
+      "tag": "WriteMemory",
+      "display_name": "写入进程内存 (WriteMemory)",
+      "icon": "✏",
+      "platforms": "All",
+      "requires_admin": true,
+      "description": "向目标软件进程或模块内存地址写入数据，支持自动解除写保护",
+      "keywords": [
+        "reverse",
+        "debug",
+        "memory",
+        "write",
+        "process",
+        "写入内存",
+        "修改内存"
+      ],
+      "fields": [
+        {
+          "name": "app",
+          "display_name": "目标进程",
+          "intrinsic_type": "String",
+          "required": true,
+          "group": "目标与地址",
+          "default_type": "string",
+          "default_value": "",
+          "presets": [],
+          "description": "目标进程名称或标识"
+        },
+        {
+          "name": "address",
+          "display_name": "内存地址",
+          "intrinsic_type": "String",
+          "required": true,
+          "group": "目标与地址",
+          "default_type": "string",
+          "default_value": "0x0",
+          "presets": [
+            "0x0"
+          ],
+          "description": "十六进制内存地址或基址"
+        },
+        {
+          "name": "value",
+          "display_name": "写入数值/内容",
+          "intrinsic_type": "String",
+          "required": true,
+          "group": "数据与格式",
+          "default_type": "string",
+          "default_value": "",
+          "presets": [],
+          "description": "待写入的数据数值、文本或十六进制字节串"
+        },
+        {
+          "name": "data_type",
+          "display_name": "数据类型",
+          "intrinsic_type": "Enum",
+          "enum_type": "MemoryDataType",
+          "group": "数据与格式",
+          "default_type": "string",
+          "default_value": "i32",
+          "presets": [
+            "i32",
+            "i64",
+            "u32",
+            "u64",
+            "f32",
+            "f64",
+            "string_utf8",
+            "string_utf16",
+            "bytes",
+            "hex",
+            "struct: { hp: i32, mp: i32, x: f32, y: f32 }"
+          ],
+          "description": "写入数据格式"
+        },
+        {
+          "name": "unprotect",
+          "display_name": "自动解除写保护",
+          "intrinsic_type": "Enum",
+          "enum_type": "WriteMemoryUnprotect",
+          "group": "数据与格式",
+          "default_type": "string",
+          "default_value": "true",
+          "presets": [
+            "true",
+            "false"
+          ],
+          "description": "写入前是否自动临时修改内存页面保护属性"
+        },
+        {
+          "name": "offsets",
+          "display_name": "指针偏移",
+          "intrinsic_type": "String",
+          "group": "高级硬件通道",
+          "is_advanced": true,
+          "default_type": "string",
+          "default_value": "",
+          "presets": [],
+          "description": "多级指针偏移链（如 0x10,0x28）"
+        },
+        {
+          "name": "backend",
+          "display_name": "驱动模式",
+          "intrinsic_type": "Enum",
+          "enum_type": "MemoryDriverBackend",
+          "group": "高级硬件通道",
+          "is_advanced": true,
+          "default_type": "string",
+          "default_value": "auto",
+          "presets": [
+            "auto",
+            "native"
+          ],
+          "description": "内存写入驱动模式"
+        },
+        {
+          "name": "memflow_connector",
+          "display_name": "硬件连接通道",
+          "intrinsic_type": "Enum",
+          "enum_type": "MemflowConnectorType",
+          "group": "高级硬件通道",
+          "is_advanced": true,
+          "default_type": "string",
+          "default_value": "",
+          "presets": [],
+          "description": "可选的外部物理直连通道配置 (PCIe DMA)"
+        }
+      ],
+      "output_type": "bool"
+    }
+  ]
+}

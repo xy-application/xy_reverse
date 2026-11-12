@@ -1,0 +1,31 @@
+{
+  "name": "ネイティブデバッグ・メモリインスペクター",
+  "description": "プロセスアタッチ、動的ライブラリ注入、エクスポート関数呼び出し、ハンドル解放、仮想/DMAメモリ読み書き、パターン検索などの専門的なリバースエンジニアリング・診断機能を提供します。",
+  "group": "リバース・デバッグ",
+  "actions": {
+    "AttachProcess": {
+      "display_name": "プロセスアタッチ (AttachProcess)",
+      "description": "ターゲットプロセスにアタッチし、動的ライブラリの注入および初期化ペイロードの実行をサポートします"
+    },
+    "CallMethod": {
+      "display_name": "エクスポート関数呼出 (CallMethod)",
+      "description": "ロードされたモジュール内の指定されたエクスポート関数を呼び出し、実行結果を取得します"
+    },
+    "CloseHandle": {
+      "display_name": "システムハンドル解放 (CloseHandle)",
+      "description": "オープンされているシステムリソースハンドルを解放し、システムの安定動作を保証します"
+    },
+    "ReadMemory": {
+      "display_name": "メモリ読取 (ReadMemory)",
+      "description": "対象プロセスのメモリからデータを読み取ります。複数ポインタオフセットと各種型フォーマットに対応します"
+    },
+    "SearchMemory": {
+      "display_name": "メモリパターン検索 (SearchMemory)",
+      "description": "対象プロセスのメモリ内で特定のバイトパターン（AOB）をワイルドカード対応でスキャン・検索します"
+    },
+    "WriteMemory": {
+      "display_name": "メモリ書込 (WriteMemory)",
+      "description": "対象プロセスのメモリにデータを書き込みます。書き込み保護の自動解除に対応します"
+    }
+  }
+}
